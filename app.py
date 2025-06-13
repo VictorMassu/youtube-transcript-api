@@ -43,6 +43,7 @@ def get_transcript():
     except VideoUnavailable:
         return jsonify({'error': 'Video is unavailable'}), 404
     except Exception as e:
+        print(f"[ERRO INTERNO] {str(e)}")
         return jsonify({'error': f'Internal error: {str(e)}'}), 500
 
 if __name__ == '__main__':
