@@ -3,8 +3,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import (
     NoTranscriptFound,
     TranscriptsDisabled,
-    VideoUnavailable,
-    TooManyRequests
+    VideoUnavailable
 )
 import urllib.parse
 
@@ -43,7 +42,5 @@ def get_transcript():
         return jsonify({'error': 'Transcripts are disabled for this video'}), 403
     except VideoUnavailable:
         return jsonify({'error': 'Video is unavailable'}), 404
-    except TooManyRequests:
-        return jsonify({'error': 'Rate limited by YouTube'}), 429
     except Exception as e:
         return jsonify({'error': f'Internal error: {str(e)}'}), 500
