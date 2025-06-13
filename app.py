@@ -35,7 +35,7 @@ def get_transcript():
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
         full_text = " ".join([entry['text'] for entry in transcript])
         return jsonify({'transcript': full_text})
-    
+
     except NoTranscriptFound:
         return jsonify({'error': 'No transcript found for this video'}), 404
     except TranscriptsDisabled:
@@ -44,3 +44,6 @@ def get_transcript():
         return jsonify({'error': 'Video is unavailable'}), 404
     except Exception as e:
         return jsonify({'error': f'Internal error: {str(e)}'}), 500
+
+if __name__ == '__main__':
+    app.run()
