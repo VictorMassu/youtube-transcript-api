@@ -1,12 +1,19 @@
 from flask import Flask, request, jsonify
 from youtube_transcript_api import YouTubeTranscriptApi
 import re
-
+import urllib.parse
 app = Flask(__name__)
 
 def extract_video_id(url):
-    match = re.search(r"(?:v=|youtu\.be/)([^&\n]+)", url)
-    return match.group(1) if match else None
+    # Tenta extrair de URLs normais ou encurtadas
+    parsed = urllib.parse.urlparse(url)
+    if "youtube.com" in parsed.netloc:
+        query = urllib.parse.parse_qs(parsed.query)
+        return query.get("v", [None])[0]
+    elif "youtu.be" in parsed.netloc:
+        return parsed.path.strip("/")
+    return None
+
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
